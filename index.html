@@ -1,0 +1,51 @@
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Ball Box</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	</head>
+	<body>
+	  <div id="gamecanvas"></div>
+
+	<script src="js/lib/threejs/three.min.js"></script>
+	<script src="js/Controls/OrbitControls.js"></script>
+	<script src="js/Controls/DeviceOrientationControls.js"></script>
+	<script src="js/lib/threejs/StereoEffect.js"></script>	
+	<script src="js/lib/cannon.js/cannon.min.js"></script>
+	<script src="js/gunner.js"></script>
+	<script src="js/lib/require.js"></script>
+
+	<div id="chooser" class="centered">
+		<div class="myBig myText center">Ball Box</div>
+		<br>
+		<div>
+			<a id="mono" class="myButton mySmall myText">Mono</a>
+			<a id="stereo" class="myButton mySmall myText">Stereo (Cardboard)</a>
+		</div>
+	</div>
+
+	<script>
+		require(["js/Game"], function (Game) {
+			"use strict";
+
+			var stereo = false;
+			var game;
+			var monoBtn = document.getElementById("mono");
+			var stereoBtn = document.getElementById("stereo");
+			var chooser = document.getElementById("chooser");
+
+			monoBtn.onclick = function () {
+				game = new Game(false);
+				chooser.style.display = "none";
+			};
+
+			stereoBtn.onclick = function () {
+				game = new Game(true);
+				chooser.style.display = "none";
+			};
+		});
+	</script>
+	</body>
+	</html>
