@@ -26,9 +26,9 @@ define("js/Game",
 
 	Game.prototype.init = function () {
 		// CANNON init
-		var bouncyMaterial = new CANNON.Material("bouncy");
-		var bouncyContactMaterial = new CANNON.ContactMaterial(bouncyMaterial, bouncyMaterial, 0.0, 10.0);
-		this.physics.world.addContactMaterial(bouncyContactMaterial);
+		//var bouncyMaterial = new CANNON.Material("bouncy");
+		//var bouncyContactMaterial = new CANNON.ContactMaterial(bouncyMaterial, bouncyMaterial, 0.3, 0.1);
+		//this.physics.world.addContactMaterial(bouncyContactMaterial);
 
 		// THREE init
 		clock = new THREE.Clock();
@@ -53,8 +53,8 @@ define("js/Game",
 
         light.shadowMapBias = 0.1;
         light.shadowMapDarkness = 0.7;
-        light.shadowMapWidth = 256;
-        light.shadowMapHeight = 256;
+        light.shadowMapWidth = 512;
+        light.shadowMapHeight = 512;
 
 		scene.add(light);
 
@@ -62,12 +62,13 @@ define("js/Game",
 		scene.add(camera);
 
 		renderer = new THREE.WebGLRenderer();
-		//renderer.shadowMapEnabled = true;
+		renderer.shadowMapEnabled = true;
 		renderer.shadowMapSoft = true;
 		renderer.setClearColor(scene.fog.color, 1);
 
 		if (stereo) {
-			effect = new THREE.StereoEffect(renderer, 0.3);
+			effect = new THREE.StereoEffect(renderer);
+			effect.separation = 0.3;
 		}
 
 		element = renderer.domElement;
@@ -91,7 +92,6 @@ define("js/Game",
 		});
 
 		var floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(300, 300, 50, 50), material);
-		console.log(floorMesh.quaternion.setFromAxisAngle);
 		floorMesh.quaternion.setFromAxisAngle(new THREE.Vector3(1,0,0), -Math.PI / 2);
 		floorMesh.receiveShadow = true;
 		floorMesh.castShadow = true;
@@ -100,7 +100,7 @@ define("js/Game",
 		var floor = this.physics.load(floorMesh, {
 			shape: new CANNON.Plane(),
 			mass: 0,
-			material: bouncyMaterial
+//			material: bouncyMaterial
 		});
 
 		// Player
@@ -123,11 +123,12 @@ define("js/Game",
 		player = this.physics.load(playerMesh, {
 			shape: new CANNON.Sphere(1.0),
 			mass : 1,
-			material: bouncyMaterial
+//			material: bouncyMaterial
 		});
+		player.body.linearDamping = 0.9;
+		player.body.angularDamping = 0.5;
 
-		camera.position.set(0,3,-4);
-		playerMesh.add(camera);
+		camera.position.set(0,5,-5);
 
 		controls = new THREE.OrbitControls(camera, element);
 		controls.rotateUp(Math.PI / 4);
@@ -138,6 +139,33 @@ define("js/Game",
 			);
 		controls.noZoom = true;
 		controls.noPan = true;
+
+		// Other balls
+		var ball2 = new THREE.Mesh(ballGeometry, playerMaterial);
+		ball2.castShadow = true;
+		ball2.receiveShadow = true;
+		ball2.position.set(0.1,7,0.03);
+		scene.add(ball2);
+		var b2 = this.physics.load(ball2, {
+			shape: new CANNON.Sphere(1.0),
+			mass : 1,
+//			material: bouncyMaterial
+		});
+		b2.body.linearDamping = 0.9;
+		b2.body.angularDamping = 0.5;
+
+		var ball3 = new THREE.Mesh(ballGeometry, playerMaterial);
+		ball3.castShadow = true;
+		ball3.receiveShadow = true;
+		ball3.position.set(-0.03,2,-0.1);
+		scene.add(ball3);
+		var b3 = this.physics.load(ball3, {
+			shape: new CANNON.Sphere(1.0),
+			mass : 1,
+//			material: bouncyMaterial
+		});
+		b3.body.linearDamping = 0.9;
+		b3.body.angularDamping = 0.5;
 
 		window.addEventListener('resize', this.resize.bind(this), false);
 		setTimeout(this.resize.bind(this), 1);
@@ -159,6 +187,8 @@ define("js/Game",
     Game.prototype.update = function (dt) {
     	this.physics.update(dt);
 
+    	camera.position.set(0,5,-5);
+    	camera.position.add(player.position);
     	camera.updateMatrix();
 
     	controls.target.set(
