@@ -115,7 +115,8 @@ THREE.DeviceOrientationControls = function(object) {
       euler.set(this.beta, this.alpha, - this.gamma, 'YXZ');
 
       quaternion.setFromEuler(euler);
-      quaternionLerp.slerp(quaternion, 0.5); // interpolate
+      //quaternionLerp.slerp(quaternion, 0.5); // interpolate
+      quaternionLerp.copy(quaternion);
 
       // orient the device
       if (this.autoAlign) this.orientationQuaternion.copy(quaternion); // interpolation breaks the auto alignment

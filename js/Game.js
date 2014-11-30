@@ -9,13 +9,13 @@ define("js/Game",
     var element, container;
     var clock;
     var stereo = false;
+    var shadows = false;
     var player;
     var light, lightPos;
 
-	function Game (str) {
-		if (str !== undefined) {
-			stereo = str;
-		}
+	function Game (config) {
+		stereo = config.stereo;
+		shadows = config.shadows;
 
 		this.physics = new GUNNER();
 		this.physics.adaptativeRate = true;
@@ -62,7 +62,7 @@ define("js/Game",
 		scene.add(camera);
 
 		renderer = new THREE.WebGLRenderer();
-		renderer.shadowMapEnabled = true;
+		renderer.shadowMapEnabled = shadows;
 		renderer.shadowMapSoft = true;
 		renderer.setClearColor(scene.fog.color, 1);
 

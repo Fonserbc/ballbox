@@ -24,6 +24,9 @@
 			<a id="mono" class="myButton mySmall myText">Mono</a>
 			<a id="stereo" class="myButton mySmall myText">Stereo (Cardboard)</a>
 		</div>
+		<div>
+			<input type="checkbox" id="shadows" class="mySmall myText">Shadows</a>
+		</div>
 	</div>
 
 	<script>
@@ -31,19 +34,34 @@
 			"use strict";
 
 			var stereo = false;
+			var shadows = false;
 			var game;
 			var monoBtn = document.getElementById("mono");
 			var stereoBtn = document.getElementById("stereo");
 			var chooser = document.getElementById("chooser");
+			var shadowCheck = document.getElementById("shadows");
+
+			function startGame () {
+				game = new Game({
+					stereo: stereo,
+					shadows: shadows
+				});
+				chooser.style.display = "none";
+			}
 
 			monoBtn.onclick = function () {
-				game = new Game(false);
-				chooser.style.display = "none";
+				stereo = false;
+				startGame();
 			};
 
 			stereoBtn.onclick = function () {
-				game = new Game(true);
-				chooser.style.display = "none";
+				stereo = true;
+				startGame();
+			};
+
+			shadowCheck.onchange = function (e) {
+				shadows = e.returnValue;
+				console.log(e);
 			};
 		});
 	</script>
