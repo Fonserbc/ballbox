@@ -2,14 +2,13 @@
  * @author alteredq / http://alteredqualia.com/
  * @authod mrdoob / http://mrdoob.com/
  * @authod arodic / http://aleksandarrodic.com/
- * @authod fonserbc / @fonserbc
  */
 
-THREE.StereoEffect = function ( renderer ) {
+THREE.StereoEffect = function ( renderer, separation) {
 
 	// API
 
-	this.separation = 3;
+	this.separation = separation === undefined? 3 : separation;
 
 	// internals
 
@@ -35,13 +34,6 @@ THREE.StereoEffect = function ( renderer ) {
 
 	};
 
-	var focus, ndfl;
-	var tf = 0.5; // Top factor
-	var bf = 0.5; // Bottom factor
-	var rf, lf;
-
-	var left, right, top, bottom;
-
 	this.render = function ( scene, camera ) {
 
 		scene.updateMatrixWorld();
@@ -50,51 +42,12 @@ THREE.StereoEffect = function ( renderer ) {
 	
 		camera.matrixWorld.decompose( _position, _quaternion, _scale );
 
-			this->interestPoint = interestPoint;
-	
-
-	//Right eye
-	eyePos = GetEyePosition(false);
-
-	focus = eyePos.z;
-	ndfl = ZNEAR / focus;
-	
-	top = VIEWPORT_HEIGHT * ndfl * tf;
-	bottom = -VIEWPORT_HEIGHT * ndfl * bf;
-
-	rf = (VIEWPORT_WIDTH/2.0 - eyePos.x) / VIEWPORT_WIDTH;
-	lf = 1.0f - rf;
-
-	left = -VIEWPORT_WIDTH * ndfl * lf;
-	right = VIEWPORT_WIDTH * ndfl * rf;
-
-	rightProj = glm::frustum(left, right, bottom, top, ZNEAR, ZFAR);
-	rightEye = glm::translate(glm::mat4(1.0f), -eyePos + glm::vec3(0.0f, 0.0f, 0.0f)); // debug);
-
 		// left
 
 		_cameraL.fov = camera.fov;
 		_cameraL.aspect = 0.5 * camera.aspect;
 		_cameraL.near = camera.near;
 		_cameraL.far = camera.far;
-
-		eyePos = GetEyePosition(true);
-
-		focus = eyePos.z;
-		ndfl = ZNEAR / focus;
-		
-		top = VIEWPORT_HEIGHT * ndfl * tf;
-		bottom = -VIEWPORT_HEIGHT * ndfl * bf;
-
-		rf = (VIEWPORT_WIDTH/2.0 - eyePos.x) / VIEWPORT_WIDTH;
-		lf = 1.0f - rf;
-
-		left = -VIEWPORT_WIDTH * ndfl * lf;
-		right = VIEWPORT_WIDTH * ndfl * rf;
-
-		leftProj = glm::frustum(left, right, bottom, top, ZNEAR, ZFAR);
-		leftEye = glm::translate(glm::mat4(1.0f), -eyePos + glm::vec3(0.0f, 0.0f, 0.0f)); // debug
-
 		_cameraL.updateProjectionMatrix();
 
 		_cameraL.position.copy( _position );

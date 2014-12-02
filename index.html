@@ -12,20 +12,17 @@
 	<script src="js/lib/three.js/build/three.min.js"></script>
 	<script src="js/Controls/OrbitControls.js"></script>
 	<script src="js/Controls/DeviceOrientationControls.js"></script>
-	<script src="js/lib/three.js/examples/js/effects/StereoEffect.js"></script>	
+	<script src="js/lib/three.js/examples/js/effects/StereoEffect.js"></script>
 	<script src="js/lib/cannon.js/cannon.min.js"></script>
 	<script src="js/gunner.js"></script>
 	<script src="js/lib/require.js"></script>
 
 	<div id="chooser" class="centered">
-		<div class="myBig myText center">Ball Box</div>
+		<div class="myBig myText center">Off-axis stereo for Cardboard</div>
 		<br>
 		<div>
-			<a id="mono" class="myButton mySmall myText">Mono</a>
-			<a id="stereo" class="myButton mySmall myText">Stereo (Cardboard)</a>
-		</div>
-		<div>
-			<input type="checkbox" id="shadows" class="mySmall myText">Shadows</a>
+			<a id="noShadows" class="myButton mySmall myText">No Shadows</a>
+			<a id="shadows" class="myButton mySmall myText">Shadows (slower)</a>
 		</div>
 	</div>
 
@@ -33,35 +30,27 @@
 		require(["js/Game"], function (Game) {
 			"use strict";
 
-			var stereo = false;
 			var shadows = false;
 			var game;
-			var monoBtn = document.getElementById("mono");
-			var stereoBtn = document.getElementById("stereo");
+			var noShadows = document.getElementById("noShadows");
+			var shadows = document.getElementById("shadows");
 			var chooser = document.getElementById("chooser");
-			var shadowCheck = document.getElementById("shadows");
 
 			function startGame () {
 				game = new Game({
-					stereo: stereo,
 					shadows: shadows
 				});
 				chooser.style.display = "none";
 			}
 
-			monoBtn.onclick = function () {
-				stereo = false;
+			noShadows.onclick = function () {
+				shadows = false;
 				startGame();
 			};
 
-			stereoBtn.onclick = function () {
-				stereo = true;
+			shadows.onclick = function () {
+				shadows = true;
 				startGame();
-			};
-
-			shadowCheck.onchange = function (e) {
-				shadows = e.returnValue;
-				console.log(e);
 			};
 		});
 	</script>

@@ -142,14 +142,6 @@ THREE.DeviceOrientationControls = function(object) {
 
       }
 
-      tempVector3
-      		.set(0, 0, 1)
-			.applyQuaternion(this.object.quaternion, 'ZXY')
-			.setLength(8);
-
-        this.object.position.copy(this.target);
-        this.object.position.add(tempVector3);
-
       if (this.autoAlign && this.alpha !== 0) {
 
         this.autoAlign = false;
