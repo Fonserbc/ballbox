@@ -258,21 +258,20 @@ define("js/Game",
 		lookAtObjects.push({
 			to: new THREE.Vector3(0,1,120),
 			from: new THREE.Vector3(0, 1, -120),
-			time: 3,
+			time: 6,
 			eyeDist: 0.05
 		});
 
-		var aux = new THREE.Vector3(-0.2, 0.2, -0.5);
+		var aux = new THREE.Vector3(-0.02, 0.02, -0.5);
 		aux.add(b3.position);
 		lookAtObjects.push({
-			to: cube.position,
+			to: b3.position,
 			from: aux,
 			time: 5,
 			eyeDist: 0.05
 		});
 
 		//
-
 
 		cameraOriginalPos.copy(camera.position);
 		controlOriginalPos.copy(controls.target);
