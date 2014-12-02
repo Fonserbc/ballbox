@@ -262,7 +262,7 @@ define("js/Game",
 			eyeDist: 0.05
 		});
 
-		var aux = new THREE.Vector3(-0.02, 0.02, -0.5);
+		var aux = new THREE.Vector3(-0.02, 0.02, -1);
 		aux.add(b3.position);
 		lookAtObjects.push({
 			to: b3.position,
