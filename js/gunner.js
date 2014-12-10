@@ -1,7 +1,7 @@
 "use strict";
 
 /*
- * CANNONjs simple wrapper
+ * CANNONjs simple wrapper WIP
  */
 if (CANNON)
 {
@@ -29,15 +29,15 @@ if (CANNON)
 		if(split)
 			world.solver = new CANNON.SplitSolver(solver);
 		else
-	    	world.solver = solver;
+			world.solver = solver;
 
-	    world.gravity.set(0, -20, 0);
-	    world.broadphase = new CANNON.NaiveBroadphase();
+		world.gravity.set(0, -20, 0);
+		world.broadphase = new CANNON.NaiveBroadphase();
 
-	    // Other
-	    this.charges = [];
+		// Other
+		this.charges = [];
 
-	    this.physicsTick = 1/60;
+		this.physicsTick = 1/60;
 		this.carryingTime = 0;
 	}
 

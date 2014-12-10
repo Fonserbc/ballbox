@@ -5,24 +5,24 @@ define("js/Game",
 	"use strict";
 
 	var camera, scene, renderer;
-    var effect, controls;
-    var element, container;
-    var clock;
-    var shadows = false;
-    var player;
-    var light, lightPos;
+	var effect, controls;
+	var element, container;
+	var clock;
+	var shadows = false;
+	var player;
+	var light, lightPos;
 
-    var lookAtObjects = [];
-    var lookAtIt = 0;
-    var lookAtTime = 0;
-    var lookAtLerp = 0;
+	var lookAtObjects = [];
+	var lookAtIt = 0;
+	var lookAtTime = 0;
+	var lookAtLerp = 0;
 
-    var textures;
+	var textures;
 
-    var cameraOriginalPos = new THREE.Vector3();
-    var controlOriginalPos = new THREE.Vector3();
-    var originalEyeSeparation;
-    var originalFocalLength;
+	var cameraOriginalPos = new THREE.Vector3();
+	var controlOriginalPos = new THREE.Vector3();
+	var originalEyeSeparation;
+	var originalFocalLength;
 
 	function Game (config) {
 		shadows = config.shadows;
@@ -56,16 +56,16 @@ define("js/Game",
 		light.castShadow = true;
 		//light.shadowCameraVisible = true;
 		light.shadowCameraNear = 10;
-        light.shadowCameraFar = 30;//camera.far;
-        light.shadowCameraLeft = -10;
-     	light.shadowCameraRight = 10;
-     	light.shadowCameraTop = 10;
-     	light.shadowCameraBottom = -10;
+		light.shadowCameraFar = 30;//camera.far;
+		light.shadowCameraLeft = -10;
+	 	light.shadowCameraRight = 10;
+	 	light.shadowCameraTop = 10;
+	 	light.shadowCameraBottom = -10;
 
-        light.shadowMapBias = 0.1;
-        light.shadowMapDarkness = 0.7;
-        light.shadowMapWidth = 512;
-        light.shadowMapHeight = 512;
+		light.shadowMapBias = 0.1;
+		light.shadowMapDarkness = 0.7;
+		light.shadowMapWidth = 512;
+		light.shadowMapHeight = 512;
 
 		scene.add(light);
 
@@ -127,11 +127,11 @@ define("js/Game",
 		});
 
 		// Balls
-        var ballGeometry = new THREE.SphereGeometry(1.0, 32, 32);
-        var ballMaterial = new THREE.MeshLambertMaterial({
-        	color: 0xffffff,
-        	map: textures["golf"]
-        });
+		var ballGeometry = new THREE.SphereGeometry(1.0, 32, 32);
+		var ballMaterial = new THREE.MeshLambertMaterial({
+			color: 0xffffff,
+			map: textures["golf"]
+		});
 		var ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
 		ballMesh.castShadow = true;
 		ballMesh.receiveShadow = true;
@@ -165,9 +165,9 @@ define("js/Game",
 
 		var cubeGeometry = new THREE.BoxGeometry(10, 10, 10, 1, 1, 1);
 		var cubeMaterial = new THREE.MeshLambertMaterial({
-        	color: 0xffffff,
-        	map: textures["cube"],
-        });
+			color: 0xffffff,
+			map: textures["cube"],
+		});
 		var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 		cube.position.set(0,5,50);
 		scene.add(cube);
@@ -223,11 +223,11 @@ define("js/Game",
 		// Ceil
 		var ceilGeometry = new THREE.BoxGeometry(100, 100, 100, 1, 1, 1);
 		var ceilMaterial = new THREE.MeshLambertMaterial({
-        	color: 0xffffff,
-        	map: textures["ceil"],
-        	side: THREE.DoubleSide,
-        	transparent: true
-        });
+			color: 0xffffff,
+			map: textures["ceil"],
+			side: THREE.DoubleSide,
+			transparent: true
+		});
 		var ceil = new THREE.Mesh(ceilGeometry, ceilMaterial);
 		ceil.position.set(0,0,0);
 		ceil.frustumCulled = false;
@@ -290,63 +290,63 @@ define("js/Game",
 		camera.updateProjectionMatrix();
 
 		effect.setSize(width, height);
-    }
+	}
 
-    Game.prototype.update = function (dt) {
-    	this.physics.update(dt);
+	Game.prototype.update = function (dt) {
+		this.physics.update(dt);
 
-    	var lo = lookAtObjects[lookAtIt];
-    	var invLerp = 1.0 - lookAtLerp;
+		var lo = lookAtObjects[lookAtIt];
+		var invLerp = 1.0 - lookAtLerp;
 
-    	effect.eyeSeparation = originalEyeSeparation * invLerp + lo.eyeDist * lookAtLerp;
-    	effect.focalLength = originalFocalLength * invLerp + lo.to.distanceTo(lo.from)  * lookAtLerp;
+		effect.eyeSeparation = originalEyeSeparation * invLerp + lo.eyeDist * lookAtLerp;
+		effect.focalLength = originalFocalLength * invLerp + lo.to.distanceTo(lo.from)  * lookAtLerp;
 
-    	camera.position.copy(cameraOriginalPos);
-    	camera.position.lerp(lo.from, lookAtLerp);
-    	camera.updateMatrix();
+		camera.position.copy(cameraOriginalPos);
+		camera.position.lerp(lo.from, lookAtLerp);
+		camera.updateMatrix();
 
-    	controls.target.copy(controlOriginalPos);
-    	controls.target.lerp(lo.to, lookAtLerp);
+		controls.target.copy(controlOriginalPos);
+		controls.target.lerp(lo.to, lookAtLerp);
 
-    	light.position.copy(lightPos);
-    	light.position.add(player.position);
+		light.position.copy(lightPos);
+		light.position.add(player.position);
 
-    	this.resize();
+		this.resize();
 
-    	camera.updateProjectionMatrix();
+		camera.updateProjectionMatrix();
 
-    	controls.update(dt);
+		controls.update(dt);
 
-    	//
+		//
 
-    	lookAtTime += dt;
+		lookAtTime += dt;
 
-    	if (lookAtTime > lo.time) {
-    		lookAtIt = ( lookAtIt + 1 ) % lookAtObjects.length;
-    		lookAtTime = 0.0;
+		if (lookAtTime > lo.time) {
+			lookAtIt = ( lookAtIt + 1 ) % lookAtObjects.length;
+			lookAtTime = 0.0;
 
-    		cameraOriginalPos.copy(camera.position);
-    		controlOriginalPos.copy(controls.target);
-    		originalFocalLength = effect.focalLength;
-    		originalEyeSeparation = effect.eyeSeparation;
-    	}
+			cameraOriginalPos.copy(camera.position);
+			controlOriginalPos.copy(controls.target);
+			originalFocalLength = effect.focalLength;
+			originalEyeSeparation = effect.eyeSeparation;
+		}
 
-    	lookAtLerp = Math.min(1.0, lookAtTime / (lo.lerpTime || lo.time * 0.7));
-    }
+		lookAtLerp = Math.min(1.0, lookAtTime / (lo.lerpTime || lo.time * 0.7));
+	}
 
-    Game.prototype.render = function (dt) {
+	Game.prototype.render = function (dt) {
 		effect.render(scene, camera);
-    }
+	}
 
-    Game.prototype.run = function (t) {
-    	requestAnimationFrame(this.run.bind(this));
+	Game.prototype.run = function (t) {
+		requestAnimationFrame(this.run.bind(this));
 
-    	this.update(clock.getDelta());
-    	this.render(clock.getDelta());
-    }
+		this.update(clock.getDelta());
+		this.render(clock.getDelta());
+	}
 
 
-    function setOrientationControls (e) {
+	function setOrientationControls (e) {
 		if (!e.alpha) {
 			return;
 		}
@@ -360,17 +360,17 @@ define("js/Game",
 		window.removeEventListener('deviceorientation', setOrientationControls, true);
 	}
 
-    function fullscreen () {
-    	if (container.requestFullscreen) {
-    		container.requestFullscreen();
-    	} else if (container.msRequestFullscreen) {
-    		container.msRequestFullscreen();
-    	} else if (container.mozRequestFullScreen) {
-    		container.mozRequestFullScreen();
-    	} else if (container.webkitRequestFullscreen) {
-    		container.webkitRequestFullscreen();
-    	}
-    }
+	function fullscreen () {
+		if (container.requestFullscreen) {
+			container.requestFullscreen();
+		} else if (container.msRequestFullscreen) {
+			container.msRequestFullscreen();
+		} else if (container.mozRequestFullScreen) {
+			container.mozRequestFullScreen();
+		} else if (container.webkitRequestFullscreen) {
+			container.webkitRequestFullscreen();
+		}
+	}
 
-    return Game;
+	return Game;
 });
